@@ -2,8 +2,16 @@ import { Request,Response } from "express";
 import  Product  from "./model";
 import { count } from "console";
 
+let data = [
+    
+        { id: 1, name: 'Product 1', description: 'Description 1',author:'shashi thrur', price: 19.99 },
+        { id: 2, name: 'Product 2', description: 'Description 2',author:'shashi thrur',price: 29.99 },
+      ]
+
+
 const all_Book =async(req: Request, res: Response)=>{
     try{
+
         
        const Book = await Product.find();
         res.status(200).send({
@@ -36,12 +44,13 @@ const create_Book =async (req:Request,res:Response) => {
            const available_Book = await Product.findOne({name:name});
 
            if(available_Book){
-            return res.status(201).send({
-                success:false,
+            return res.status(200).send({
+                success:true,
                 messgae:'Book is already existing in Database'
             })
            }
-
+        // const newProduct: Product = req.body;
+        // products.push(newProduct);
            const new_Book  = await Product.create({name:name,description:description,author:author,price:price})
            new_Book.save();
            res.status(201).send({
@@ -65,10 +74,12 @@ const create_Book =async (req:Request,res:Response) => {
 
 const getById_Book =async (req:Request,res:Response) => {
     try{
+        // const productId: number = parseInt(req.params.id, 10);
+        // const product = products.find((p) => p.id === productId);
         
         const Book = await Product.findById({_id:req.params.id})
         if(Book == null){
-            res.status(200).send({
+            res.status(404).send({
                 success:true,
                 message:'Book is not Present',
             })
@@ -94,6 +105,8 @@ const getById_Book =async (req:Request,res:Response) => {
 
 const delete_Book = async(req:Request,res:Response)=>{
     try{
+        // const productId: number = parseInt(req.params.id, 10);
+        //  products = products.filter((p) => p.id !== productId);
 
         await Product.findByIdAndDelete({_id:req.params.id})
 
@@ -112,6 +125,15 @@ const delete_Book = async(req:Request,res:Response)=>{
 
 const update_Book =  async(req:Request,res:Response)=>{
     try{
+        // const productId: number = parseInt(req.params.id, 10);
+        // const updatedProduct: Product = req.body;
+      
+        // const index = products.findIndex((p) => p.id === productId);
+      
+        // if (index !== -1) {
+        //   products[index] = { ...products[index], ...updatedProduct };
+        //   res.json(products[index]);
+        // }
        
         
         
@@ -120,7 +142,7 @@ const update_Book =  async(req:Request,res:Response)=>{
     
    
 if(Book){
-    res.status(200).send({
+    res.status(204).send({
         success:true,
         messgae:'Info Updated Successfully',
         Book
